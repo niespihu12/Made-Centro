@@ -60,3 +60,9 @@ async def get_multiline_chart() -> MultiLineResponse:
 @charts_router.put("/multiline", tags=["ChartsPut"])
 async def put_multiline_chart(data: MultiLineChart):
     return put_chart("multiline", data)
+
+@charts_router.get("/delete-all-charts", tags=["ChartsDelete"])
+async def delete_all_charts():
+    for chart in charts_store.values():
+        chart.update(title="", description="", trendLabel="", dateRangeLabel="", trendDirection=True, data=[])
+    return JSONResponse(content={"message": "All charts deleted"}, status_code=200)
